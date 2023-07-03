@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const UserCreatePage = () => {
   const [skills, setSkills] = useState([]);
@@ -65,7 +66,8 @@ const UserCreatePage = () => {
         .finally(() => {
           console.log(newUser);
           form.reset();
-          alert("Successfully added employee");
+
+          Swal.fire("Employee Created Successfully!");
         });
     } catch (err) {
       console.log(err);

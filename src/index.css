@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 :root {
-  background-color: #fdf4f4;
+  background-color: #fff;
   color: #fff;
   font-synthesis: none;
   background-blend-mode: darken;

@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AiFillDelete, AiFillEdit } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { useGetData } from "../hooks/getData";
+import Swal from "sweetalert2";
 const SearchUserPage = () => {
-  const { data: datas, loading, refetch } = useGetData("/employes");
+  const { data: datas, loading, refetch } = useGetData(`/employes`);
   const [data, setData] = useState([]);
-
+  const formRef = useRef();
   useEffect(() => {
     if (!loading) {
       setData(datas);
@@ -13,20 +14,34 @@ const SearchUserPage = () => {
   }, [datas, !loading]);
 
   const handleDelete = (e) => {
-    fetch(`https://server-2vba.onrender.com/employes/${e}`, {
-      method: "DELETE",
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        refetch();
-        console.log(data);
-      });
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch(`https://server-2vba.onrender.com/employes/${e}`, {
+          method: "DELETE",
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            refetch();
+            console.log(data);
+          });
+        Swal.fire("Deleted!", "Your file has been deleted.", "success");
+      }
+    });
   };
   const handleSearch = (e) => {
     e.preventDefault();
     const form = e.target;
     const name = form.name.value;
     const mobileNo = form.mobileNo.value;
+    console.log(form);
     try {
       fetch(
         `https://server-2vba.onrender.com/employes/find?name=${name}&&mobileNo=${mobileNo}`
@@ -39,9 +54,12 @@ const SearchUserPage = () => {
   };
   const handleClear = () => {
     setData(datas);
+    formRef.current.reset();
   };
+  console.log(datas);
+
   return (
-    <div className="w-full  bg-white mx-2">
+    <div className="w-full overflow-hidden  bg-white mx-2">
       <h1 className="px-2 py-5 text-3xl text-black font-semibold   my-2 border-l-4  rounded-  border-purple-400">
         Employee
         <span className="text-sm pl-2 uppercase">-Search </span>
@@ -57,7 +75,8 @@ const SearchUserPage = () => {
         </div>
         <form
           onSubmit={handleSearch}
-          className="flex items-center flex-col md:flex-row mb-5 pb-5 justify-center px-4"
+          ref={formRef}
+          className="flex  items-center flex-col md:flex-row mb-5 pb-5 justify-center px-4"
         >
           <div className="w-full md:w-1/3 px-3 mb-6">
             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">

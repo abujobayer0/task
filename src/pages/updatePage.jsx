@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useGetData } from "../hooks/getData";
 import { usePutData } from "../hooks/useUpdate";
+import Swal from "sweetalert2";
 const UpdateEmployee = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -70,7 +71,7 @@ const UpdateEmployee = () => {
             form.reset();
             refetch();
             navigate("/search");
-            alert("Successfully updated employee");
+            Swal.fire("Successfully updated employee!");
           },
           onError: (error) => {
             console.log(error);

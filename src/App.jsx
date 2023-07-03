@@ -1,7 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import HomePage from "./pages/home";
 import { useEffect } from "react";
-
 import UserCreatePage from "./pages/userCreatePage";
 import SearchUserPage from "./pages/searchUserPage";
 import { Home, LoginComp } from "./components";
