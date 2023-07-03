@@ -4,7 +4,9 @@ import { useEffect } from "react";
 
 import UserCreatePage from "./pages/userCreatePage";
 import SearchUserPage from "./pages/searchUserPage";
-import { Home } from "./components";
+import { Home, LoginComp } from "./components";
+import UpdateEmployee from "./pages/updatePage";
+import PrivateRoute from "./router/privateRoute";
 
 const App = () => {
   useEffect(() => {
@@ -13,28 +15,45 @@ const App = () => {
   return (
     <>
       <Routes>
+        <Route path="/login" element={<LoginComp />}></Route>
         <Route
           path="/"
           element={
-            <HomePage>
-              <Home />
-            </HomePage>
+            <PrivateRoute>
+              <HomePage>
+                <Home />
+              </HomePage>
+            </PrivateRoute>
           }
         ></Route>
         <Route
           path="/create"
           element={
-            <HomePage>
-              <UserCreatePage />
-            </HomePage>
+            <PrivateRoute>
+              <HomePage>
+                <UserCreatePage />
+              </HomePage>
+            </PrivateRoute>
           }
         />
         <Route
           path="/search"
           element={
-            <HomePage>
-              <SearchUserPage />
-            </HomePage>
+            <PrivateRoute>
+              <HomePage>
+                <SearchUserPage />
+              </HomePage>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/update/employee/:id"
+          element={
+            <PrivateRoute>
+              <HomePage>
+                <UpdateEmployee />
+              </HomePage>
+            </PrivateRoute>
           }
         />
       </Routes>

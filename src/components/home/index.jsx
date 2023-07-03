@@ -1,8 +1,8 @@
 const Home = () => {
   return (
-    <div>
-      <section className="pt-10 min-h-screen ml-2 pb-8 overflow-hidden bg-gray-100 sm:pt-16 lg:pt-24">
-        <div className="px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
+    <div className="w-full">
+      <section className="pt-10 min-h-screen ml-2 pb-8 overflow-hidden bg-gray-100  sm:pt-16 lg:pt-24">
+        <div className="px-4 mx-auto sm:px-6 lg:px-8 w-full">
           <div className="max-w-2xl mx-auto text-center">
             <h2 className="text-3xl font-bold leading-tight text-black sm:text-4xl lg:text-5xl">
               Welcome To Jala Academy

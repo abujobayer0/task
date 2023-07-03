@@ -1,6 +1,41 @@
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { app } from "../../utils/firebase.init";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useAuthState } from "react-firebase-hooks/auth/dist/index.cjs";
+const auth = getAuth(app);
 const LoginComp = () => {
+  const location = useLocation();
+  const [user] = useAuthState(auth);
+  const from = location.state?.from?.pathname || "/";
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (user) {
+      navigate(from);
+    }
+  }, [user]);
+  const handleLogin = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const email = form.email.value;
+    const password = form.password.value;
+    console.log(email, password);
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        if (user) {
+          navigate(from);
+        }
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+      });
+  };
   return (
-    <section className="py-10 bg-gray-50 w-full sm:py-16 lg:py-24">
+    <section className="py-10 bg-gray-50 w-full sm:py-16 ">
       <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div className="maxW-2xl mx-auto text-center">
           <h2 className="text-3xl font-bold leading-tight text-black sm:text-4xl lg:text-5xl">
@@ -13,10 +48,10 @@ const LoginComp = () => {
           </p>
         </div>
 
-        <div className="relative maxW-md mx-auto mt-8 md:mt-16">
+        <div className="relative maxW-md mx-auto mt-8 md:mt-10">
           <div className="overflow-hidden bgWhite rounded-md shadow-md">
             <div className="px-4 py-6 sm:px-8 sm:py-7">
-              <form action="#" method="POST">
+              <form onSubmit={handleLogin}>
                 <div className="space-y-5">
                   <div>
                     <label className="text-base font-medium text-gray-900">
@@ -43,7 +78,8 @@ const LoginComp = () => {
 
                       <input
                         type="email"
-                        name=""
+                        name="email"
+                        required
                         id=""
                         placeholder="Enter email to get started"
                         className="block w-full py-4 pl-10 pr-4 text-black placeholder-gray-500 transition-all duration-200 bgWhite border border-gray-200 rounded-md focus:outline-none focus:border-blue-600 caret-blue-600"
@@ -61,7 +97,7 @@ const LoginComp = () => {
                       <a
                         href="#"
                         title=""
-                        className="text-sm font-medium text-orange-500 transition-all duration-200 hover:text-orange-600 focus:text-orange-600 hover:underline"
+                        className="text-sm font-medium text-purple-500 transition-all duration-200 hover:text-purple-600 focus:text-purple-600 hover:underline"
                       >
                         {" "}
                         Forgot password?{" "}
@@ -87,7 +123,8 @@ const LoginComp = () => {
 
                       <input
                         type="password"
-                        name=""
+                        name="password"
+                        required
                         id=""
                         placeholder="Enter your password"
                         className="block w-full py-4 pl-10 pr-4 text-black placeholder-gray-500 transition-all duration-200 bgWhite border border-gray-200 rounded-md focus:outline-none focus:border-blue-600 caret-blue-600"
@@ -98,7 +135,7 @@ const LoginComp = () => {
                   <div>
                     <button
                       type="submit"
-                      className="inline-flex items-center justify-center w-full px-4 py-4 text-base font-semibold textWhite transition-all duration-200 bg-blue-600 border border-transparent rounded-md focus:outline-none hover:bg-blue-700 focus:bg-blue-700"
+                      className="inline-flex items-center justify-center w-full px-4 py-4 text-base font-semibold textWhite transition-all duration-200 bg-purple-600 border border-transparent rounded-md focus:outline-none hover:bg-purple-700 focus:bg-purple-700"
                     >
                       Log in
                     </button>
@@ -110,7 +147,7 @@ const LoginComp = () => {
                       <a
                         href="#"
                         title=""
-                        className="font-medium text-orange-500 transition-all duration-200 hover:text-orange-600 hover:underline"
+                        className="font-medium text-purple-500 transition-all duration-200 hover:text-purple-600 hover:underline"
                       >
                         Create a free account
                       </a>

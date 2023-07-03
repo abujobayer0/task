@@ -1,13 +1,23 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useGetData } from "../hooks/getData";
+import { usePutData } from "../hooks/useUpdate";
+const UpdateEmployee = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { data, loading, refetch } = useGetData(`/employee/${id}`);
+  const { mutate } = usePutData(`/employee/update/${id}`);
 
-const UserCreatePage = () => {
-  const [skills, setSkills] = useState([]);
+  const employee = !loading && data ? data[0] : {};
+  const [gender, setGender] = useState("");
   const [otherCity, setOtherCity] = useState(false);
+  const [skills, setSkills] = useState([]);
+
   const handleOtherCity = () => {
     setOtherCity((prev) => !prev);
   };
   const handleSkillChange = (e) => {
+    e.preventDefault();
     const selectedSkill = e.target.value;
     const updatedSkills = [...skills];
 
@@ -21,7 +31,7 @@ const UserCreatePage = () => {
     }
     setSkills(updatedSkills);
   };
-  const [gender, setGender] = useState("male");
+  console.log(skills);
 
   const handleGenderChange = (e) => {
     setGender(e.target.value);
@@ -39,48 +49,51 @@ const UserCreatePage = () => {
     const country = form.country.value;
     const city = form.city.value || form.otherCity.value;
     const Skills = skills;
-    const newUser = {
-      firstName,
-      lastName,
-      email,
-      mobileNo,
-      birthDate,
-      Gender,
-      address,
-      country,
-      city,
-      Skills,
-    };
+
     try {
-      fetch("https://server-2vba.onrender.com/create/employee", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      mutate(
+        {
+          firstName,
+          lastName,
+          email,
+          mobileNo,
+          birthDate,
+          Gender,
+          address,
+          country,
+          city,
+          Skills,
         },
-        body: JSON.stringify(newUser),
-      })
-        .then((res) => res.json())
-        .then((data) => console.log(data))
-        .catch((err) => console.log(err))
-        .finally(() => {
-          console.log(newUser);
-          form.reset();
-          alert("Successfully added employee");
-        });
+        {
+          onSuccess: (data) => {
+            console.log(data);
+            form.reset();
+            refetch();
+            navigate("/search");
+            alert("Successfully updated employee");
+          },
+          onError: (error) => {
+            console.log(error);
+          },
+        }
+      );
     } catch (err) {
       console.log(err);
-    } finally {
-      console.log("");
     }
   };
   const handleCancel = () => {
     console.log("canceled");
   };
+  useEffect(() => {
+    setGender(!loading && employee ? employee?.Gender : "");
+    setSkills(!loading && employee && employee?.Skills);
+  }, [employee, !loading]);
+
   return (
     <div className="w-full mr-2">
       <h1 className="px-2 py-5 text-3xl text-black font-semibold  ml-2 my-2 border-l-4  rounded-  border-purple-400">
         Employee
-        <span className="text-sm pl-2 uppercase">-Create </span>
+        <span className="text-sm pl-2 uppercase">-Update </span>
       </h1>
       <section className="pt-10 min-h-screen mx-2 md:mx-0 md:ml-2  pb-8 overflow-hidden bg-white sm:pt-16 lg:pt-24">
         <div className="px-4 mx-auto sm:px-6 lg:px-8  w-full ">
@@ -97,7 +110,7 @@ const UserCreatePage = () => {
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   name="firstName"
                   type="text"
-                  placeholder="jone"
+                  defaultValue={employee?.firstName}
                   required
                 />
               </div>
@@ -111,8 +124,8 @@ const UserCreatePage = () => {
                 <input
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   name="lastName"
+                  defaultValue={employee?.lastName}
                   type="text"
-                  placeholder="Doe"
                   required
                 />
               </div>
@@ -126,9 +139,9 @@ const UserCreatePage = () => {
                 <input
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   name="email"
+                  defaultValue={employee?.email}
                   required
                   type="email"
-                  placeholder="example@gmail.com"
                 />
               </div>
             </div>
@@ -143,8 +156,8 @@ const UserCreatePage = () => {
                 <input
                   className="appearance-none   block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   name="mobileNo"
-                  type="number"
-                  placeholder="Mobile No"
+                  defaultValue={employee?.mobileNo}
+                  type="text"
                 />
               </div>{" "}
               <div className="w-full md:w-1/3 px-3">
@@ -157,9 +170,9 @@ const UserCreatePage = () => {
                 <input
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   name="birthDate"
+                  defaultValue={employee?.birthDate}
                   required
                   type="date"
-                  placeholder="Doe"
                 />
               </div>
               <div className="w-full md:w-1/3 px-3">
@@ -180,7 +193,7 @@ const UserCreatePage = () => {
                       className="form-radio text-lg  text-blue-500"
                       name="gender"
                       value="male"
-                      checked={gender === "male"}
+                      checked={!loading && gender && gender === "male"}
                       onChange={handleGenderChange}
                     />
                     <label htmlFor="male" className="ml-2 text-black">
@@ -194,7 +207,7 @@ const UserCreatePage = () => {
                       className="form-radio text-pink-500"
                       name="gender"
                       value="female"
-                      checked={gender === "female"}
+                      checked={!loading && gender && gender === "female"}
                       onChange={handleGenderChange}
                     />
                     <label htmlFor="female" className="ml-2 text-black">
@@ -214,6 +227,7 @@ const UserCreatePage = () => {
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   name="address"
                   type="text"
+                  defaultValue={employee?.address}
                   placeholder="Address"
                 />
               </div>
@@ -230,8 +244,8 @@ const UserCreatePage = () => {
                   <select
                     className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     name="country"
+                    defaultValue={employee?.country || "Select"}
                   >
-                    <option defaultChecked> Select</option>
                     <option>Bangladesh</option>
                     <option>Canada</option>
                     <option>China</option>
@@ -281,8 +295,8 @@ const UserCreatePage = () => {
                     <select
                       className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                       name="city"
+                      defaultValue={employee?.city || ""}
                     >
-                      <option defaultChecked> Select</option>
                       <option>Dhaka</option>
                       <option>Chittagong</option>
                       <option>Toronto</option>
@@ -336,7 +350,7 @@ const UserCreatePage = () => {
                     <input
                       type="checkbox"
                       value="AWS"
-                      checked={skills.includes("AWS")}
+                      checked={skills?.includes("AWS")}
                       onChange={handleSkillChange}
                     />
                     AWS
@@ -346,7 +360,7 @@ const UserCreatePage = () => {
                     <input
                       type="checkbox"
                       value="DevOps"
-                      checked={skills.includes("DevOps")}
+                      checked={skills?.includes("DevOps")}
                       onChange={handleSkillChange}
                     />
                     DevOps
@@ -356,7 +370,7 @@ const UserCreatePage = () => {
                     <input
                       type="checkbox"
                       value="Full Stack Developer"
-                      checked={skills.includes("Full Stack Developer")}
+                      checked={skills?.includes("Full Stack Developer")}
                       onChange={handleSkillChange}
                     />
                     Full Stack Developer
@@ -366,7 +380,7 @@ const UserCreatePage = () => {
                     <input
                       type="checkbox"
                       value="Middleware"
-                      checked={skills.includes("Middleware")}
+                      checked={skills?.includes("Middleware")}
                       onChange={handleSkillChange}
                     />
                     Middleware
@@ -376,7 +390,7 @@ const UserCreatePage = () => {
                     <input
                       type="checkbox"
                       value="QA-Automation"
-                      checked={skills.includes("QA-Automation")}
+                      checked={skills?.includes("QA-Automation")}
                       onChange={handleSkillChange}
                     />
                     QA-Automation
@@ -386,15 +400,12 @@ const UserCreatePage = () => {
                     <input
                       type="checkbox"
                       value="WebServices"
-                      checked={skills.includes("WebServices")}
+                      checked={skills?.includes("WebServices")}
                       onChange={handleSkillChange}
                     />
                     WebServices
                   </label>
                   <br />
-                </div>
-                <div className="mt-5 text-gray-800">
-                  Selected skills: <strong>{skills.join(", ")}</strong>
                 </div>
               </div>
             </div>
@@ -403,7 +414,7 @@ const UserCreatePage = () => {
                 type="submit"
                 className="px-4 py-2 rounded bg-green-500 text-white"
               >
-                Save
+                Update
               </button>
               <Link to={"/search"}>
                 <span
@@ -421,4 +432,4 @@ const UserCreatePage = () => {
   );
 };
 
-export default UserCreatePage;
+export default UpdateEmployee;

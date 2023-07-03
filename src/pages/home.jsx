@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { SideBar } from "../components";
 import { AiOutlineLogout } from "react-icons/ai";
-
+import { getAuth, signOut } from "firebase/auth";
+import { app } from "../utils/firebase.init";
+const auth = getAuth(app);
 const HomePage = ({ children }) => {
   const [toggled, setToggled] = React.useState(false);
   const [index, setIndex] = useState(0);
@@ -10,6 +12,16 @@ const HomePage = ({ children }) => {
   );
   const handleToggle = () => {
     setToggled((prev) => !prev);
+  };
+  const handleSignout = () => {
+    signOut(auth)
+      .then(() => {
+        // Sign-out successful.
+        console.log("sign out successfull");
+      })
+      .catch((error) => {
+        // An error happened.
+      });
   };
   return (
     <>
@@ -21,7 +33,10 @@ const HomePage = ({ children }) => {
         >
           Magnus
         </h1>
-        <button className="text-3xl uppercase w-full flex  right-0 justify-end items-end px-10">
+        <button
+          onClick={handleSignout}
+          className="text-3xl uppercase w-full flex  right-0 justify-end items-end px-10"
+        >
           <AiOutlineLogout className="text-3xl  w-fit  pr-10" />
         </button>
       </div>

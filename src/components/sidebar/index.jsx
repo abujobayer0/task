@@ -3,11 +3,15 @@ import {
   AiFillDashboard,
   AiFillDatabase,
   AiFillSetting,
+  AiOutlineLogout,
   AiOutlineMenu,
   AiOutlineSearch,
   AiOutlineUserAdd,
 } from "react-icons/ai";
 import { Link } from "react-router-dom";
+import { getAuth, signOut } from "firebase/auth";
+import { app } from "../../utils/firebase.init";
+const auth = getAuth(app);
 const SideBar = ({
   toggled,
   handleToggle,
@@ -19,7 +23,16 @@ const SideBar = ({
   const handleIndex = (e) => {
     setIndex(e);
   };
-
+  const handleSignout = () => {
+    signOut(auth)
+      .then(() => {
+        // Sign-out successful.
+        console.log("sign out successfull");
+      })
+      .catch((error) => {
+        // An error happened.
+      });
+  };
   return (
     <div style={{ minHeight: "100%" }} className="flex-col  md:flex-row flex">
       <Sidebar
@@ -49,8 +62,8 @@ const SideBar = ({
               icon={<AiFillDashboard />}
               onClick={() => handleIndex(0)}
               style={{
-                color: index === 0 ? "#000" : "#000",
-                backgroundColor: index === 0 ? "#E5BEEC" : "#fff",
+                color: index === 0 ? "#7128f8" : "#000",
+                backgroundColor: index === 0 ? "#fff" : "#fff",
               }}
             >
               Home
@@ -61,8 +74,8 @@ const SideBar = ({
             label="Employee"
             icon={<AiFillDashboard />}
             style={{
-              color: index === 1 || index === 2 ? "#000" : "#000",
-              backgroundColor: index === 1 || index === 2 ? "#E5BEEC" : "#fff",
+              color: index === 1 || index === 2 ? "#7128f8" : "#000",
+              backgroundColor: index === 1 || index === 2 ? "#fff" : "#fff",
             }}
           >
             <Link to={"/create"}>
@@ -70,8 +83,8 @@ const SideBar = ({
                 onClick={() => handleIndex(1)}
                 icon={<AiOutlineUserAdd />}
                 style={{
-                  color: index === 1 ? "#000" : "#000",
-                  backgroundColor: index === 1 ? "#FDE2F3" : "#fff",
+                  color: index === 1 ? "#7128f8" : "#000",
+                  backgroundColor: index === 1 ? "#fff" : "#fff",
                 }}
               >
                 Create
@@ -82,8 +95,8 @@ const SideBar = ({
                 onClick={() => handleIndex(2)}
                 icon={<AiOutlineSearch />}
                 style={{
-                  color: index === 2 ? "#000" : "#000",
-                  backgroundColor: index === 2 ? "#FDE2F3" : "#fff",
+                  color: index === 2 ? "#7128f8" : "#000",
+                  backgroundColor: index === 2 ? "#fff" : "#fff",
                 }}
               >
                 Search
@@ -116,6 +129,15 @@ const SideBar = ({
             {" "}
             Settings
           </MenuItem>
+          <div className="flex md:hidden">
+            <MenuItem
+              onClick={handleSignout}
+              icon={<AiOutlineLogout />}
+              style={{ color: "#000", backgroundColor: "#fff" }}
+            >
+              Sign out
+            </MenuItem>
+          </div>
         </Menu>
       </Sidebar>
       <main style={{ padding: 10 }}>
