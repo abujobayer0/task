@@ -11,7 +11,7 @@ const SearchUserPage = () => {
     if (!loading) {
       setData(datas);
     }
-  }, [datas, !loading]);
+  }, [datas, !loading, loading]);
 
   const handleDelete = (e) => {
     Swal.fire({
@@ -64,9 +64,22 @@ const SearchUserPage = () => {
         Employee
         <span className="text-sm pl-2 uppercase">-Search </span>
       </h1>
+
       <div className="bg-white  w-full">
         <div className="w-full flex py-5 font-semibold justify-between px-4 items-center">
-          <h2 className="text-lg">Search Employee</h2>
+          <h2 className="text-lg text-black">Search Employee</h2>
+          {!datas ? (
+            <h2 className="text-lg text-black">
+              <div className="flex items-center justify-center space-x-2">
+                <div className="w-4 h-4 rounded-full animate-pulse bg-violet-600"></div>
+                <div className="w-4 h-4 rounded-full animate-pulse bg-violet-600"></div>
+                <div className="w-4 h-4 rounded-full animate-pulse bg-violet-600"></div>
+                <span>loading...</span>
+              </div>
+            </h2>
+          ) : (
+            ""
+          )}
           <Link to={"/create"}>
             <button className="px-4 py-2 bg-purple-600 text-white">
               Add Employee
@@ -114,6 +127,7 @@ const SearchUserPage = () => {
           </div>
         </form>
       </div>
+
       <div className="overflow-hidden bg-white overflow-x-scroll ">
         <table className="min-w-full divide-y  divide-gray-200">
           <thead>
@@ -147,7 +161,7 @@ const SearchUserPage = () => {
               </th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y text-gray-700 text-xs divide-gray-200">
+          <tbody className="bg-white divide-y text-gray-700 min-h-screen text-xs divide-gray-200">
             {!loading &&
               data?.map((item, indx) => (
                 <tr key={indx}>

@@ -4,7 +4,7 @@ import { AiOutlineLogout } from "react-icons/ai";
 import { getAuth, signOut } from "firebase/auth";
 import { app } from "../utils/firebase.init";
 const auth = getAuth(app);
-const HomePage = ({ children }) => {
+const HomePage = ({ children, title }) => {
   const [toggled, setToggled] = React.useState(false);
   const [index, setIndex] = useState(0);
   const [broken, setBroken] = React.useState(
@@ -25,7 +25,7 @@ const HomePage = ({ children }) => {
   };
   return (
     <>
-      <div className="w-full  h-20 hidden md:flex justify-between items-center bg-[#917FB3]">
+      <div className="w-full  py-3 hidden md:flex justify-between items-center bg-purple-600">
         {" "}
         <h1
           className="text-3xl uppercase w-full justify-center text-white items-center px-10"
@@ -49,6 +49,7 @@ const HomePage = ({ children }) => {
           broken={broken}
           handleToggle={handleToggle}
         />
+
         {children}
       </div>
     </>

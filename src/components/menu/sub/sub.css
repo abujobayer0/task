@@ -1,0 +1,11 @@
+.group:hover .group-hover\:visible {
+  visibility: visible;
+}
+
+.group2:hover .group2-hover\:visible {
+  visibility: visible;
+}
+
+.left-52 {
+  left: 5rem;
+}
