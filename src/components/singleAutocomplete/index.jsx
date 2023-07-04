@@ -1,100 +1,119 @@
-import { ReactSearchAutocomplete } from "react-search-autocomplete";
+import useAutocomplete from "@mui/base/useAutocomplete";
+import { styled } from "@mui/system";
 
-function SingleAutocomplete() {
-  // note: the id field is mandatory
-  const items = [
-    {
-      id: 0,
-      title: "Titanic",
-      description: "A movie about love",
-    },
-    {
-      id: 1,
-      title: "Dead Poets Society",
-      description: "A movie about poetry and the meaning of life",
-    },
-    {
-      id: 2,
-      title: "Terminator 2",
-      description: "A robot from the future is sent back in time",
-    },
-    {
-      id: 3,
-      title: "Alien 2",
-      description: "Ripley is back for a new adventure",
-    },
-  ];
-  const handleOnSearch = (string, results) => {
-    // onSearch will have as the first callback parameter
-    // the string searched and for the second the results.
-    console.log(string, results);
-  };
+const Label = styled("label")({
+  display: "block",
+});
 
-  const handleOnHover = (result) => {
-    // the item hovered
-    console.log(result);
-  };
+const Input = styled("input")(({ theme }) => ({
+  border: "1px solid #e8e8e8",
+  backgroundColor: theme.palette.mode === "light" ? "#fff" : "#000",
+  color: theme.palette.mode === "light" ? "#000" : "#fff",
+}));
 
-  const handleOnSelect = (item) => {
-    // the item selected
-    console.log(item);
-  };
+const Listbox = styled("ul")(({ theme }) => ({
+  margin: 0,
+  padding: 0,
+  zIndex: 1,
+  position: "absolute",
+  listStyle: "none",
+  backgroundColor: theme.palette.mode === "light" ? "#fff" : "#000",
+  overflow: "auto",
+  maxHeight: 200,
+  border: "1px solid rgba(0,0,0,.25)",
+  "& li.Mui-focused": {
+    backgroundColor: "#4a8df6",
+    color: "white",
+    cursor: "pointer",
+  },
+  "& li:active": {
+    backgroundColor: "#2977f5",
+    color: "white",
+  },
+}));
 
-  const handleOnFocus = () => {
-    console.log("Focused");
-  };
-  const handleOnClear = () => {
-    console.log("Cleared");
-  };
-
-  const formatResult = (item) => {
-    return (
-      <>
-        <span style={{ display: "block", textAlign: "left" }}>
-          id: {item.id}
-        </span>
-        <span style={{ display: "block", textAlign: "left" }}>
-          name: {item.name}
-        </span>
-      </>
-    );
-  };
+export default function UseAutocomplete() {
+  const {
+    getRootProps,
+    getInputLabelProps,
+    getInputProps,
+    getListboxProps,
+    getOptionProps,
+    groupedOptions,
+  } = useAutocomplete({
+    id: "use-autocomplete-demo",
+    options: datas,
+    getOptionLabel: (option) => option.title,
+  });
 
   return (
-    <div className="SingleAutocomplete  ">
-      <div className="w-full m-0 md:m-10 md:w-1/2">
-        <h2>Tags:</h2>
-        <ReactSearchAutocomplete
-          items={items}
-          fuseOptions={{ keys: ["title", "description"] }} // Search on both fields
-          resultStringKeyName="title" // String to display in the results
-          onSearch={handleOnSearch}
-          onHover={handleOnHover}
-          onSelect={handleOnSelect}
-          onFocus={handleOnFocus}
-          onClear={handleOnClear}
-          showIcon={false}
-          styling={{
-            height: "34px",
-            border: "1px solid purple",
-            borderRadius: "0px",
-            backgroundColor: "white",
-            boxShadow: "none",
-            hoverBackgroundColor: "purple",
-            color: "purple",
-            fontSize: "20px",
-            fontFamily: "serif",
-            iconColor: "purple",
-            lineColor: "purple",
-            placeholderColor: "purple",
-            clearIconMargin: "3px 8px 0 0",
-            zIndex: 2,
-            width: "100%",
-          }}
-        />
+    <div className="w-full">
+      <div {...getRootProps()}>
+        <Label {...getInputLabelProps()}>Tags:</Label>
+        <Input {...getInputProps()} />
       </div>
+      {groupedOptions.length > 0 ? (
+        <Listbox {...getListboxProps()}>
+          {groupedOptions.map((option, index) => (
+            <li {...getOptionProps({ option, index })}>{option.title}</li>
+          ))}
+        </Listbox>
+      ) : null}
     </div>
   );
 }
 
-export default SingleAutocomplete;
+// Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top
+const datas = [
+  { title: "Java", year: 1994 },
+  { title: "Python", year: 1972 },
+  { title: "Ruby", year: 1974 },
+  { title: "C#", year: 2008 },
+  { title: "JavaScript", year: 1957 },
+  { title: "C++", year: 1993 },
+  { title: "HTML", year: 1994 },
+  { title: "CSS", year: 2003 },
+  { title: "Perl", year: 1966 },
+  { title: "Swift", year: 1999 },
+  { title: "Rust", year: 2001 },
+  { title: "Go", year: 1980 },
+  { title: "PHP", year: 1994 },
+  { title: "Kotlin", year: 2010 },
+  { title: "TypeScript", year: 2002 },
+  { title: "Scala", year: 1975 },
+  { title: "Haskell", year: 1990 },
+  { title: "R", year: 1999 },
+  { title: "Elixir", year: 1954 },
+  { title: "SQL", year: 1977 },
+  { title: "React", year: 2002 },
+  { title: "Angular", year: 1995 },
+  { title: "Vue.js", year: 1991 },
+  { title: "Node.js", year: 1946 },
+  { title: "Laravel", year: 1997 },
+  { title: "Django", year: 1995 },
+  { title: "Spring", year: 1994 },
+  { title: "Express.js", year: 2001 },
+  { title: "Ruby on Rails", year: 1998 },
+  { title: "Flask", year: 1968 },
+  { title: "Android", year: 1998 },
+  { title: "iOS", year: 1960 },
+  { title: "TensorFlow", year: 1991 },
+  { title: "PyTorch", year: 1985 },
+  { title: "OpenCV", year: 1957 },
+  { title: "Unity", year: 1981 },
+  { title: "Bootstrap", year: 1942 },
+  { title: "jQuery", year: 1931 },
+  { title: "Selenium", year: 1960 },
+  { title: "Docker", year: 1999 },
+  { title: "Git", year: 2014 },
+  { title: "Mocha", year: 1942 },
+  { title: "Jenkins", year: 1936 },
+  { title: "Redis", year: 1981 },
+  { title: "PostgreSQL", year: 1941 },
+  { title: "MongoDB", year: 1959 },
+  { title: "Elasticsearch", year: 1958 },
+  { title: "Apache Kafka", year: 1983 },
+  { title: "GraphQL", year: 1992 },
+  { title: "Flask-SQLAlchemy", year: 1995 },
+  { title: "Pandas", year: 1931 },
+];

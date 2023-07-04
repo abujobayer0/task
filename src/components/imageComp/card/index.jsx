@@ -6,7 +6,7 @@ const ImageCard = ({ imageUrl, title }) => {
     download(imageUrl);
   };
   return (
-    <div className="image-card shadow-lg rounded-lg overflow-hidden">
+    <div className="image-card relative shadow-lg rounded-lg overflow-hidden">
       <img
         src={imageUrl}
         loading="lazy"

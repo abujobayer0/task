@@ -72,10 +72,11 @@ const ImgComp = () => {
       imgRef.current.value = null;
       setUploadLoading(false);
       setUload(true);
-      refetch();
       Swal.fire("Successfully added image!");
     } catch (err) {
       console.log(err);
+    } finally {
+      refetch();
     }
   };
 
@@ -121,7 +122,7 @@ const ImgComp = () => {
       <div>
         <h1 className="text-3xl font-semibold text-gray-700">List Of Images</h1>
       </div>
-      <div className="grid w-full h-fit justify-items-center auto-rows-[minmax(100px,auto)] lg:grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4 ">
+      <div className="grid w-full h-fit justify-items-center relative md:mx-10 auto-rows-[minmax(100px,auto)] lg:grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4 ">
         {allImg?.map((img, index) => (
           <ImageCard key={index} imageUrl={img.img} title={img.name} />
         ))}

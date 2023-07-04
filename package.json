@@ -12,6 +12,9 @@
   "dependencies": {
     "@headlessui/react": "^1.7.15",
     "@heroicons/react": "^2.0.18",
+    "@mui/icons-material": "^5.11.16",
+    "@mui/material": "^5.13.6",
+    "@mui/styled-engine-sc": "^5.12.0",
     "@tanstack/react-query": "^4.29.19",
     "animate.css": "^4.1.1",
     "axios": "^1.4.0",
@@ -31,6 +34,7 @@
     "react-router-dom": "^6.14.1",
     "react-search-autocomplete": "^8.5.2",
     "sort-by": "^1.2.0",
+    "styled-components": "^5.3.11",
     "sweetalert2": "^11.7.12"
   },
   "devDependencies": {
