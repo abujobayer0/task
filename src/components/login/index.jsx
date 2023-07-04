@@ -35,7 +35,7 @@ const LoginComp = () => {
       });
   };
   return (
-    <section className="py-10 bg-gray-50 w-full sm:py-16 ">
+    <section className="py-10 bg-gray-50 min-h-screen w-full sm:py-16 ">
       <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div className="maxW-2xl mx-auto text-center">
           <h2 className="text-3xl font-bold leading-tight text-black sm:text-4xl lg:text-5xl">
