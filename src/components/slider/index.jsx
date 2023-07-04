@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 const Slider = () => {
   const [value, setValue] = useState(0);
@@ -9,6 +9,7 @@ const Slider = () => {
       <input
         id="range"
         type="range"
+        defaultValue={0}
         onChange={(e) => setValue(e.target.value)}
         className="block w-full py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-0 dark:focus:border-blue-500 focus:outline-none "
       />
