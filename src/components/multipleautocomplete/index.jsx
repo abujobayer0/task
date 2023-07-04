@@ -11,13 +11,11 @@ const Root = styled("div")(
   color: ${
     theme.palette.mode === "dark" ? "rgba(255,255,255,0.65)" : "rgba(0,0,0,.85)"
   };
-  font-size: 14px;
+  font-size: 16px;
 `
 );
 
 const Label = styled("label")`
-  padding: 0 0 4px;
-  line-height: 1.5;
   display: block;
 `;
 
@@ -80,6 +78,7 @@ const StyledTag = styled(Tag)(
   display: flex;
   align-items: center;
   height: 24px;
+  
   margin: 2px;
   line-height: 22px;
   background-color: ${

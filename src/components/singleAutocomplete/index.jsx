@@ -50,7 +50,14 @@ export default function UseAutocomplete() {
     <div className="w-full">
       <div {...getRootProps()}>
         <Label {...getInputLabelProps()}>Tags:</Label>
-        <Input {...getInputProps()} />
+        <Input
+          sx={{
+            width: { xs: "100%", md: "50%" },
+            height: "34px",
+            display: "flex",
+          }}
+          {...getInputProps()}
+        />
       </div>
       {groupedOptions.length > 0 ? (
         <Listbox {...getListboxProps()}>
