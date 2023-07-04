@@ -19,6 +19,11 @@ const ImgComp = () => {
       setUload(false);
     }
   }, [data, loading, uload, name, image]);
+  useEffect(() => {
+    fetch("https://server-2vba.onrender.com/images")
+      .then((res) => res.json())
+      .then((data) => setAllImg(data));
+  }, [uload, name, image]);
   const handleFileUpload = async (event) => {
     const file = event.target.files[0];
     const formData = new FormData();
@@ -122,7 +127,7 @@ const ImgComp = () => {
       <div>
         <h1 className="text-3xl font-semibold text-gray-700">List Of Images</h1>
       </div>
-      <div className="grid w-full h-fit justify-items-center relative md:mx-10 auto-rows-[minmax(100px,auto)] lg:grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4 ">
+      <div className="grid w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-3 h-fit justify-items-center relative  auto-rows-[minmax(100px,auto)]  gap-4 ">
         {allImg?.map((img, index) => (
           <ImageCard key={index} imageUrl={img.img} title={img.name} />
         ))}
