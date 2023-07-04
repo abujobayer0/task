@@ -93,15 +93,6 @@ const LoginComp = () => {
                         {" "}
                         Password{" "}
                       </label>
-
-                      <a
-                        href="#"
-                        title=""
-                        className="text-sm font-medium text-purple-500 transition-all duration-200 hover:text-purple-600 focus:text-purple-600 hover:underline"
-                      >
-                        {" "}
-                        Forgot password?{" "}
-                      </a>
                     </div>
                     <div className="mt-2.5 relative text-gray-400 focusWithin:text-gray-600">
                       <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
