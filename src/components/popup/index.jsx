@@ -64,12 +64,8 @@ const Popup = () => {
   const handleConfirm = () => {
     const result = window.confirm("Confirm message box");
     if (result) {
-      // User clicked OK
-      // Perform your desired action here
       console.log("User confirmed");
     } else {
-      // User clicked Cancel
-      // Handle the cancellation or take appropriate action
       console.log("User cancelled");
     }
   };

@@ -63,7 +63,6 @@ export default function UseAutocomplete() {
   );
 }
 
-// Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top
 const datas = [
   { title: "Java", year: 1994 },
   { title: "Python", year: 1972 },

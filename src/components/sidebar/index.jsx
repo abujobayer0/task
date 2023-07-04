@@ -27,12 +27,9 @@ const SideBar = ({
   const handleSignout = () => {
     signOut(auth)
       .then(() => {
-        // Sign-out successful.
         console.log("sign out successfull");
       })
-      .catch((error) => {
-        // An error happened.
-      });
+      .catch((error) => {});
   };
   return (
     <div style={{ minHeight: "100%" }} className="flex-col  md:flex-row flex">
@@ -107,7 +104,7 @@ const SideBar = ({
           <SubMenu
             label="More"
             icon={<AiFillDatabase />}
-            style={{ color: "#000", background: "#fff" }} // Add custom styles to SubMenu component
+            style={{ color: "#000", background: "#fff" }}
           >
             <Link to="/multiple/tabs">
               <MenuItem

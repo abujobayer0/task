@@ -22,12 +22,10 @@ const LoginComp = () => {
     console.log(email, password);
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        // Signed in
         const user = userCredential.user;
         if (user) {
           navigate(from);
         }
-        // ...
       })
       .catch((error) => {
         const errorCode = error.code;

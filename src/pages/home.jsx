@@ -16,12 +16,9 @@ const HomePage = ({ children, title }) => {
   const handleSignout = () => {
     signOut(auth)
       .then(() => {
-        // Sign-out successful.
         console.log("sign out successfull");
       })
-      .catch((error) => {
-        // An error happened.
-      });
+      .catch((error) => {});
   };
   return (
     <>
